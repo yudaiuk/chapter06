@@ -22,6 +22,7 @@ $(function() {
       addItems();
       $loadMoreButton.on('click', addItems);
       $filter.on('change', 'input[type="radio"]', filterItems);
+      $container.on('mouseenter mouseleave', '.gallery-item a', hoverDirection);
     }
 
     function addItems(filter) {
@@ -56,12 +57,60 @@ $(function() {
           }
         });
 
+      $container.find('a').colorbox({
+        maxWidth: '970px',
+        maxHeight: '95%',
+        title: function() {
+          return $(this).find('.inner').html();
+        }
+      })
+
       addedd += slicedData.length;
       if(addedd < filteredData.length) {
         $loadMoreButton.show();
       } else {
         $loadMoreButton.hide();
       }
+    }
+
+    function hoverDirection (event) {
+      var $overlay = $(this).find('.caption'),
+          side = getMouseDirection(event),
+          animateTo,
+          positionIn = {
+            top: '0%',
+            left: '0%'
+          },
+          positionOut = (function () {
+            switch (side) {
+              case 0: return { top: '-100%', left: '0%' };
+                      breake;
+              case 1: return { top: '0%', left: '100%' };
+                      breake;
+              case 2: return { top: '100%', left: '0%' };
+                      breake;
+              default: return { top: '0%', left: '-100%' };
+                       breake;
+            }
+          }) ();
+      if (event.type === 'mouseenter') {
+        animateTo = positionIn;
+        $overlay.css(positionOut);
+      } else {
+        animateTo = positionOut;
+      }
+      $overlay.stop(true).animate(animateTo, 250, 'easeOutExpo');
+    }
+
+    function getMouseDirection (event) {
+      var $el = $(event.currentTarget),
+          offset = $el.offset(),
+          w = $el.outerWidth(),
+          h = $el.outerHeight(),
+          x = (event.pageX - offset.left - w / 2) * ((w > h)? h / w: 1),
+          y = (event.pageY - offset.top - h / 2) * ((h > w)? w / h: 1),
+          direction = Math.round((((Math.atan2(y, x) * (180 / Math.PI)) + 180 ) / 90 ) + 3 ) % 4;
+      return direction;
     }
 
     function filterItems() {

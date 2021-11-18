@@ -48,9 +48,44 @@ img { vertical-align: middle; }
 }
 .gallery-item a {
     display: block;
+    overflow: hidden;
+    position: relative;
 }
 .gallery-item .caption {
-    display: none;
+  background-color: rgba(231, 31, 25, 0.8);
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 100%;
+  left: 100%;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  color: rgb(255, 255, 255);
+}
+
+.gallery-item .caption:before {
+  content: "";
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+.gallery-item .caption > .inner {
+  display: inline-block;
+  vertical-align: middle;
+}
+.gallery-item .title {
+  display: block;
+  font-saptionize: 18px;
+  line-height: 1.17;
+}
+.gallery-item .date {
+  display: block;
+  font-family: "Georgia", serif;
+  font-size: 12px;
+  font-style: italic;
+  line-height: 1.75;
 }
 
 /* 画像の読み込み中は見えないように */
